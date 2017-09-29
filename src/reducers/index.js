@@ -1,7 +1,7 @@
-import updateScore from './updateScore';
+import { updateScore } from './updateScore';
 import { PLAYER_SCORED, RESET_GAME } from '../actions';
 
-export const initialScore = {
+export const initialState = {
   player1: {
     gamePoints: 0,
     setPoints: 0,
@@ -12,17 +12,17 @@ export const initialScore = {
     setPoints: 0,
     matchPoints: 0,
   },
-  winner: null,
+  winner: '',
 };
 
-export default (state = initialScore, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case PLAYER_SCORED: {
       const playerWhoScored = action.payload;
       return Object.assign({}, updateScore(state, playerWhoScored));
     }
     case RESET_GAME:
-      return Object.assign({}, initialScore);
+      return Object.assign({}, initialState);
     default:
       return state;
   }

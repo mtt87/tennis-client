@@ -1,21 +1,32 @@
 import React from 'react';
-import DisplaySetsGames from './components/DisplaySetsGames';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+import reducers from './reducers';
+import DisplaySets from './components/DisplaySets';
+import DisplayGames from './components/DisplayGames';
 import DisplayPoints from './components/DisplayPoints';
 import Rules from './components/Rules';
 import Controls from './components/Controls';
+import Winner from './components/Winner';
+
+const store = createStore(reducers);
 
 const App = () => (
-  <div className="container" style={{ paddingTop: 10 }}>
-    <div className="columns">
-      <DisplayPoints />
-      <DisplaySetsGames type="Sets" />
-      <DisplaySetsGames type="Games" />
-      <Rules />
+  <Provider store={store}>
+    <div className="container" style={{ paddingTop: 10 }}>
+      <div className="columns">
+        <DisplayPoints />
+        <DisplaySets />
+        <DisplayGames type="Games" />
+        <Rules />
+      </div>
+      <div className="columns">
+        <Controls />
+        <Winner />
+      </div>
     </div>
-    <div>
-      <Controls />
-    </div>
-  </div>
+  </Provider>
 );
 
 export default App;

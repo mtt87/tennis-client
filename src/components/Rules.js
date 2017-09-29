@@ -9,7 +9,7 @@ const Rules = () => (
           4 points to win a game <small>(with 2 points of advantage if 40-40)</small>
         </li>
         <li>6 games to win a set</li>
-        <li>3 games to win a match</li>
+        <li>2 out of 3 match to win</li>
       </ul>
     </div>
   </div>
