@@ -167,7 +167,7 @@ describe('update the set points', () => {
 });
 
 describe('update the match points', () => {
-  it('increase by 1 set point if player wins a game', () => {
+  it('increase by 1 match point if player1 wins 6 sets', () => {
     let score = reducer(
       {
         ...initialState,
@@ -191,7 +191,29 @@ describe('update the match points', () => {
 });
 
 describe('update the match points', () => {
-  it('increase by 1 set point if player wins a game', () => {
+  it('increase by 1 match point if player2 wins 6 sets', () => {
+    let score = reducer(
+      {
+        ...initialState,
+        player2: {
+          ...initialState.player2,
+          gamePoints: 3,
+          setPoints: 5,
+        },
+      },
+      {},
+    );
+    score = reducer(score, playerScored('player2'));
+    expect(score.player1.gamePoints).toEqual(0);
+    expect(score.player2.gamePoints).toEqual(0);
+    expect(score.player1.setPoints).toEqual(0);
+    expect(score.player2.setPoints).toEqual(0);
+    expect(score.player1.matchPoints).toEqual(0);
+    expect(score.player2.matchPoints).toEqual(1);
+    expect(score.winner).toEqual('');
+  });
+
+  it('increase by 1 set point if player1 wins a game by 2 points of advantage after tie', () => {
     let score = reducer(
       {
         ...initialState,
@@ -200,9 +222,29 @@ describe('update the match points', () => {
           gamePoints: 3,
           setPoints: 5,
         },
+        player2: {
+          ...initialState.player2,
+          setPoints: 5,
+        },
       },
       {},
     );
+    // win game
+    score = reducer(score, playerScored('player1'));
+    expect(score.player1.gamePoints).toEqual(0);
+    expect(score.player2.gamePoints).toEqual(0);
+    expect(score.player1.setPoints).toEqual(6);
+    expect(score.player2.setPoints).toEqual(5);
+    expect(score.player1.matchPoints).toEqual(0);
+    expect(score.player2.matchPoints).toEqual(0);
+    expect(score.winner).toEqual('');
+    // 15-0
+    score = reducer(score, playerScored('player1'));
+    // 30-0
+    score = reducer(score, playerScored('player1'));
+    // 40-0
+    score = reducer(score, playerScored('player1'));
+    // win game
     score = reducer(score, playerScored('player1'));
     expect(score.player1.gamePoints).toEqual(0);
     expect(score.player2.gamePoints).toEqual(0);
@@ -210,6 +252,48 @@ describe('update the match points', () => {
     expect(score.player2.setPoints).toEqual(0);
     expect(score.player1.matchPoints).toEqual(1);
     expect(score.player2.matchPoints).toEqual(0);
+    expect(score.winner).toEqual('');
+  });
+
+  it('increase by 1 set point if player1 wins a game by 2 points of advantage after tie', () => {
+    let score = reducer(
+      {
+        ...initialState,
+        player1: {
+          ...initialState.player1,
+          setPoints: 5,
+        },
+        player2: {
+          ...initialState.player2,
+          gamePoints: 3,
+          setPoints: 5,
+        },
+      },
+      {},
+    );
+    // win game
+    score = reducer(score, playerScored('player2'));
+    expect(score.player1.gamePoints).toEqual(0);
+    expect(score.player2.gamePoints).toEqual(0);
+    expect(score.player1.setPoints).toEqual(5);
+    expect(score.player2.setPoints).toEqual(6);
+    expect(score.player1.matchPoints).toEqual(0);
+    expect(score.player2.matchPoints).toEqual(0);
+    expect(score.winner).toEqual('');
+    // 15-0
+    score = reducer(score, playerScored('player2'));
+    // 30-0
+    score = reducer(score, playerScored('player2'));
+    // 40-0
+    score = reducer(score, playerScored('player2'));
+    // win game +1 set
+    score = reducer(score, playerScored('player2'));
+    expect(score.player1.gamePoints).toEqual(0);
+    expect(score.player2.gamePoints).toEqual(0);
+    expect(score.player1.setPoints).toEqual(0);
+    expect(score.player2.setPoints).toEqual(0);
+    expect(score.player1.matchPoints).toEqual(0);
+    expect(score.player2.matchPoints).toEqual(1);
     expect(score.winner).toEqual('');
   });
 });

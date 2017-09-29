@@ -1,12 +1,12 @@
 export function calculateMatchWinner(score) {
   if (score.player1.matchPoints === 2) {
-    // player 1 won the set
+    // player1 won the set
     return {
       ...score,
       winner: 'player1',
     };
   } else if (score.player2.matchPoints === 2) {
-    // player 1 won the set
+    // player2 won the set
     return {
       ...score,
       winner: 'player2',
@@ -42,11 +42,23 @@ export function updateMatchPoints(score, setWinner) {
 }
 
 export function calculateSetWinner(score) {
-  if (score.player1.setPoints === 6) {
-    // player 1 won the set
+  if (score.player1.setPoints === 6 && score.player2.setPoints < 5) {
+    // player1 won the set
     return updateMatchPoints(score, 'player1');
-  } else if (score.player2.setPoints === 6) {
-    // player 1 won the set
+  } else if (score.player2.setPoints === 6 && score.player1.setPoints < 5) {
+    // player1 won the set
+    return updateMatchPoints(score, 'player2');
+  } else if (
+    score.player1.setPoints > 5 &&
+    score.player1.setPoints - score.player2.setPoints === 2
+  ) {
+    // player1 won the set with 2 points of advantage
+    return updateMatchPoints(score, 'player1');
+  } else if (
+    score.player2.setPoints > 5 &&
+    score.player2.setPoints - score.player1.setPoints === 2
+  ) {
+    // player2 won the set with 2 points of advantage
     return updateMatchPoints(score, 'player2');
   }
   return score;
